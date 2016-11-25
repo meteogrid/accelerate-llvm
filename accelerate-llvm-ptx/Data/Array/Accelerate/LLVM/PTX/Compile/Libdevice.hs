@@ -145,8 +145,8 @@ instance Libdevice AST.Module where
       (2,_)             -> libdevice_20_mdl   -- 2.0, 2.1
       (3,x) | x < 5     -> libdevice_30_mdl   -- 3.0, 3.2
             | otherwise -> libdevice_35_mdl   -- 3.5, 3.7
-      (5,_)             -> libdevice_50_mdl   -- 5.0
-      _                 -> $internalError "libdevice" "no binary for this architecture"
+      (5,x) | x <= 3    -> libdevice_50_mdl   -- 5.0
+      _                 -> libdevice_30_mdl   -- > 5.3
 
 instance Libdevice (String, ByteString) where
   libdevice (Compute n m) =
@@ -154,8 +154,8 @@ instance Libdevice (String, ByteString) where
       (2,_)             -> libdevice_20_bc    -- 2.0, 2.1
       (3,x) | x < 5     -> libdevice_30_bc    -- 3.0, 3.2
             | otherwise -> libdevice_35_bc    -- 3.5, 3.7
-      (5,_)             -> libdevice_50_bc    -- 5.0
-      _                 -> $internalError "libdevice" "no binary for this architecture"
+      (5,x) | x <= 3    -> libdevice_50_bc    -- 5.0
+      _                 -> libdevice_30_bc    -- > 5.3
 
 
 -- Load the libdevice bitcode files as an LLVM AST module. The top-level
