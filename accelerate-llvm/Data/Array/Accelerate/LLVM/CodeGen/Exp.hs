@@ -23,6 +23,7 @@ import Control.Applicative                                          hiding ( Con
 import Control.Monad
 import Prelude                                                      hiding ( exp, any )
 import qualified Data.IntMap                                        as IM
+import Unsafe.Coerce (unsafeCoerce)
 
 import Data.Array.Accelerate.AST                                    hiding ( Val(..), prj )
 import Data.Array.Accelerate.Analysis.Match
@@ -363,6 +364,7 @@ llvmOfOpenExp arch top env aenv = cvtE top
         PrimFromIntegral ta tb    -> A.fromIntegral ta tb    =<< cvtE x
         PrimToFloating ta tb      -> A.toFloating ta tb      =<< cvtE x
         PrimCoerce ta tb          -> A.coerce ta tb          =<< cvtE x
+        PrimSafeCoerce _ _        -> fmap unsafeCoerce (cvtE x)
           -- no missing patterns, whoo!
 
 
